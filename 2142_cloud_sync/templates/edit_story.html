@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="{% if current_lang == 'ar' %}ar{% else %}en{% endif %}" dir="{% if current_lang == 'ar' %}rtl{% else %}ltr{% endif %}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% if current_lang == 'ar' %}تعديل القصة - Elegant{% else %}Edit Story - Elegant{% endif %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .form-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            margin: 2rem auto;
+            padding: 2rem;
+        }
+        .page-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #f8f9fa;
+        }
+        .page-header h1 {
+            color: #2c3e50;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        .form-label {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+        .form-control {
+            border-radius: 10px;
+            border: 2px solid #e9ecef;
+            padding: 0.75rem 1rem;
+            transition: all 0.3s ease;
+        }
+        .form-control:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 10px;
+            padding: 12px 30px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+        }
+        .btn-secondary {
+            border-radius: 10px;
+            padding: 12px 30px;
+            font-weight: 600;
+        }
+        .back-btn {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 50px;
+            padding: 8px 16px;
+            text-decoration: none;
+            color: #2c3e50;
+            font-weight: 600;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .back-btn:hover {
+            background: white;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            color: #667eea;
+        }
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+        .character-count {
+            font-size: 0.8rem;
+            color: #6c757d;
+            text-align: left;
+        }
+        .language-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid #e9ecef;
+            padding-bottom: 1rem;
+        }
+        .lang-tab {
+            padding: 0.5rem 1.5rem;
+            border: none;
+            background: none;
+            color: #6c757d;
+            font-weight: 600;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+        .lang-tab.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+        }
+        .lang-content {
+            display: none;
+        }
+        .lang-content.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="form-container">
+            <a href="{{ url_for('dashboard_stories') }}" class="back-btn">
+                <i class="fas {% if current_lang == 'ar' %}fa-arrow-right{% else %}fa-arrow-left{% endif %}"></i> 
+                {% if current_lang == 'ar' %}العودة لإدارة القصص{% else %}Back to Stories Management{% endif %}
+            </a>
+
+            <div class="page-header">
+                <h1><i class="fas fa-edit"></i> {% if current_lang == 'ar' %}تعديل القصة{% else %}Edit Story{% endif %}</h1>
+                <p>
+                    {% if current_lang == 'ar' %}
+                        {{ story.title_ar or story.title_en or 'تعديل قصة' }}
+                    {% else %}
+                        {{ story.title_en or story.title_ar or 'Edit Story' }}
+                    {% endif %}
+                </p>
+            </div>
+
+            <form method="POST" enctype="multipart/form-data">
+                <!-- Language Tabs -->
+                <div class="language-tabs">
+                    <button type="button" class="lang-tab active" onclick="switchLang('ar')">
+                        🇸🇦 العربية
+                    </button>
+                    <button type="button" class="lang-tab" onclick="switchLang('en')">
+                        🇬🇧 English
+                    </button>
+                </div>
+
+                <!-- Arabic Content -->
+                <div id="lang-ar" class="lang-content active">
+                    <div class="form-group">
+                        <label for="title_ar" class="form-label">عنوان القصة (عربي) *</label>
+                        <input type="text" class="form-control" id="title_ar" name="title_ar" required
+                               value="{{ story.title_ar or '' }}" placeholder="مثال: رحلتي إلى كندا">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="author_name_ar" class="form-label">اسم صاحب القصة (عربي)</label>
+                        <input type="text" class="form-control" id="author_name_ar" name="author_name_ar"
+                               value="{{ story.author_name_ar or '' }}" placeholder="أدخل اسم صاحب القصة">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="summary_ar" class="form-label">ملخص القصة (عربي)</label>
+                        <textarea class="form-control" id="summary_ar" name="summary_ar" rows="3"
+                                  placeholder="ملخص قصير يظهر في الصفحة الرئيسية (150-200 حرف)">{{ story.summary_ar or '' }}</textarea>
+                        <small class="form-text text-muted">سيظهر في الصفحة الرئيسية</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="content_ar" class="form-label">محتوى القصة الكامل (عربي) *</label>
+                        <textarea class="form-control" id="content_ar" name="content_ar" rows="8" required
+                                  placeholder="اكتب القصة الكاملة بالعربي...">{{ story.content_ar or '' }}</textarea>
+                        <div class="character-count">
+                            <span id="charCount_ar">{{ (story.content_ar or '')|length }}</span> حرف
+                        </div>
+                    </div>
+                </div>
+
+                <!-- English Content -->
+                <div id="lang-en" class="lang-content">
+                    <div class="form-group">
+                        <label for="title_en" class="form-label">Story Title (English) *</label>
+                        <input type="text" class="form-control" id="title_en" name="title_en" required
+                               value="{{ story.title_en or '' }}" placeholder="Example: My Journey to Canada">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="author_name_en" class="form-label">Author Name (English)</label>
+                        <input type="text" class="form-control" id="author_name_en" name="author_name_en"
+                               value="{{ story.author_name_en or '' }}" placeholder="Enter the author's name">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="summary_en" class="form-label">Story Summary (English)</label>
+                        <textarea class="form-control" id="summary_en" name="summary_en" rows="3"
+                                  placeholder="Short summary to display on the homepage (150-200 characters)">{{ story.summary_en or '' }}</textarea>
+                        <small class="form-text text-muted">Will appear on the homepage</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="content_en" class="form-label">Full Story Content (English) *</label>
+                        <textarea class="form-control" id="content_en" name="content_en" rows="8" required
+                                  placeholder="Write the full story in English...">{{ story.content_en or '' }}</textarea>
+                        <div class="character-count">
+                            <span id="charCount_en">{{ (story.content_en or '')|length }}</span> characters
+                        </div>
+                    </div>
+            </div>
+
+                <!-- Common Fields -->
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="story_date" class="form-label">
+                                {% if current_lang == 'ar' %}تاريخ القصة{% else %}Story Date{% endif %}
+                            </label>
+                            <input type="date" class="form-control" id="story_date" name="story_date" 
+                                   value="{{ story.story_date or '' }}">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="image_url" class="form-label">
+                                {% if current_lang == 'ar' %}رابط الصورة (اختياري){% else %}Image URL (Optional){% endif %}
+                            </label>
+                            <input type="url" class="form-control" id="image_url" name="image_url"
+                                   value="{{ story.image_url or '' }}" placeholder="https://example.com/image.jpg">
+                            <small class="form-text text-muted">
+                                {% if current_lang == 'ar' %}أو ارفع صورة من جهازك بالأسفل{% else %}Or upload an image from your device below{% endif %}
+                            </small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Current Media -->
+                {% if story.image_url or story.video_path %}
+                <div class="alert alert-success">
+                    <h6>{% if current_lang == 'ar' %}الوسائط الحالية:{% else %}Current Media:{% endif %}</h6>
+                    {% if story.image_url %}
+                    <p><i class="fas fa-image"></i> <strong>{% if current_lang == 'ar' %}الصورة:{% else %}Image:{% endif %}</strong> {{ story.image_url }}</p>
+                    {% endif %}
+                    {% if story.video_path %}
+                    <p><i class="fas fa-video"></i> <strong>{% if current_lang == 'ar' %}الفيديو:{% else %}Video:{% endif %}</strong> {{ story.video_path }}</p>
+                    {% endif %}
+                </div>
+                {% endif %}
+
+                <!-- File Uploads Section -->
+                <div class="row">
+                    <div class="col-md-6">
+                <div class="form-group">
+                            <label for="image_file" class="form-label">
+                                <i class="fas fa-image"></i>
+                                {% if current_lang == 'ar' %}رفع صورة جديدة{% else %}Upload New Image{% endif %}
+                            </label>
+                            <input type="file" class="form-control" id="image_file" name="image_file" 
+                                   accept="image/png,image/jpg,image/jpeg,image/gif,image/webp">
+                            <small class="form-text text-muted">
+                                {% if current_lang == 'ar' %}
+                                    الصيغ المسموحة: PNG, JPG, JPEG, GIF, WEBP (حد أقصى 5 ميجابايت)
+                                {% else %}
+                                    Allowed formats: PNG, JPG, JPEG, GIF, WEBP (Max 5 MB)
+                                {% endif %}
+                            </small>
+                            <div id="imagePreview" class="mt-2"></div>
+                        </div>
+                </div>
+                    <div class="col-md-6">
+                <div class="form-group">
+                            <label for="video_file" class="form-label">
+                                <i class="fas fa-video"></i>
+                                {% if current_lang == 'ar' %}رفع فيديو جديد{% else %}Upload New Video{% endif %}
+                            </label>
+                            <input type="file" class="form-control" id="video_file" name="video_file" 
+                                   accept="video/mp4,video/avi,video/mov,video/wmv,video/webm,video/mkv">
+                            <small class="form-text text-muted">
+                                {% if current_lang == 'ar' %}
+                                    الصيغ المسموحة: MP4, AVI, MOV, WMV, WEBM, MKV (حد أقصى 100 ميجابايت)
+                                {% else %}
+                                    Allowed formats: MP4, AVI, MOV, WMV, WEBM, MKV (Max 100 MB)
+                                {% endif %}
+                            </small>
+                            <div id="videoPreview" class="mt-2"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle"></i>
+                    {% if current_lang == 'ar' %}
+                        <strong>ملاحظة:</strong> رفع ملف جديد سيستبدل الملف القديم. الفيديو سيظهر في صفحة تفاصيل القصة الكاملة فقط.
+                    {% else %}
+                        <strong>Note:</strong> Uploading a new file will replace the old one. The video will appear only in the full story details page.
+                    {% endif %}
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> 
+                        {% if current_lang == 'ar' %}حفظ التعديلات{% else %}Save Changes{% endif %}
+                    </button>
+                    <a href="{{ url_for('dashboard_stories') }}" class="btn btn-secondary">
+                        <i class="fas fa-times"></i> 
+                        {% if current_lang == 'ar' %}إلغاء{% else %}Cancel{% endif %}
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Language tabs functionality
+        function switchLang(lang) {
+            // Remove active class from all tabs
+            document.querySelectorAll('.lang-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Hide all language content
+            document.querySelectorAll('.lang-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // Activate selected language
+            document.querySelector(`.lang-tab[onclick*="${lang}"]`).classList.add('active');
+            document.getElementById(`lang-${lang}`).classList.add('active');
+        }
+
+        // Character counters
+        const contentArTextarea = document.getElementById('content_ar');
+        const contentEnTextarea = document.getElementById('content_en');
+        const charCountAr = document.getElementById('charCount_ar');
+        const charCountEn = document.getElementById('charCount_en');
+        
+        if (contentArTextarea && charCountAr) {
+            contentArTextarea.addEventListener('input', function() {
+                charCountAr.textContent = this.value.length;
+            });
+        }
+        
+        if (contentEnTextarea && charCountEn) {
+            contentEnTextarea.addEventListener('input', function() {
+                charCountEn.textContent = this.value.length;
+            });
+        }
+
+        // Image preview
+        const imageInput = document.getElementById('image_file');
+        const imagePreview = document.getElementById('imagePreview');
+        
+        if (imageInput) {
+            imageInput.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        imagePreview.innerHTML = `
+                            <div style="border: 2px solid #667eea; border-radius: 10px; padding: 10px; background: #f8f9ff;">
+                                <img src="${e.target.result}" style="max-width: 100%; max-height: 200px; border-radius: 8px;">
+                                <p style="margin-top: 10px; font-size: 0.9rem; color: #667eea;">
+                                    <i class="fas fa-check-circle"></i> ${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)
+                                </p>
+                            </div>
+                        `;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        }
+
+        // Video preview
+        const videoInput = document.getElementById('video_file');
+        const videoPreview = document.getElementById('videoPreview');
+        
+        if (videoInput) {
+            videoInput.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const fileSize = (file.size / 1024 / 1024).toFixed(2);
+                    videoPreview.innerHTML = `
+                        <div style="border: 2px solid #667eea; border-radius: 10px; padding: 15px; background: #f8f9ff;">
+                            <i class="fas fa-video" style="font-size: 3rem; color: #667eea;"></i>
+                            <p style="margin-top: 10px; font-size: 0.9rem; color: #667eea;">
+                                <i class="fas fa-check-circle"></i> ${file.name}
+                            </p>
+                            <p style="font-size: 0.85rem; color: #6c757d;">
+                                الحجم: ${fileSize} MB
+                            </p>
+                        </div>
+                    `;
+                }
+            });
+        }
+    </script>
+</body>
+</html>
+
