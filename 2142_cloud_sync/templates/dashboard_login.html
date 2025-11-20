@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="{% if current_lang == 'ar' %}ar{% else %}en{% endif %}" dir="{% if current_lang == 'ar' %}rtl{% else %}ltr{% endif %}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% if current_lang == 'ar' %}تسجيل الدخول - لوحة التحكم{% else %}Login - Dashboard{% endif %}</title>
+    <link href="{{ url_for('static', filename='tooplate-cloud-sync-style.css') }}" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .login-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 3rem;
+            max-width: 450px;
+            width: 100%;
+            margin: 2rem;
+        }
+        
+        .login-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .login-header h1 {
+            color: #2c3e50;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .login-header p {
+            color: #6c757d;
+            font-size: 1rem;
+        }
+        
+        .login-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            color: white;
+            font-size: 2rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #2c3e50;
+            font-weight: 600;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .login-btn {
+            width: 100%;
+            padding: 0.75rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+        }
+        
+        .back-link {
+            text-align: center;
+            margin-top: 1.5rem;
+        }
+        
+        .back-link a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .back-link a:hover {
+            color: #764ba2;
+        }
+        
+        .alert {
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 1.5rem;
+        }
+        
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        /* Force ALL elements to be visible - Override CSS file rules */
+        body.dashboard-login-page *,
+        body.dashboard-login-page h1,
+        body.dashboard-login-page h2,
+        body.dashboard-login-page h3,
+        body.dashboard-login-page p,
+        body.dashboard-login-page div,
+        body.dashboard-login-page form,
+        body.dashboard-login-page input,
+        body.dashboard-login-page button,
+        body.dashboard-login-page label,
+        body.dashboard-login-page a,
+        body.dashboard-login-page i {
+            opacity: 1 !important;
+            visibility: visible !important;
+            display: block !important;
+            transform: translate(0, 0) !important;
+        }
+        
+        body.dashboard-login-page .login-container,
+        body.dashboard-login-page .login-header,
+        body.dashboard-login-page .login-icon,
+        body.dashboard-login-page .form-group,
+        body.dashboard-login-page .login-btn,
+        body.dashboard-login-page .back-link {
+            opacity: 1 !important;
+            visibility: visible !important;
+            display: block !important;
+        }
+        
+        body.dashboard-login-page form {
+            display: block !important;
+        }
+        
+        body.dashboard-login-page input {
+            display: block !important;
+            opacity: 1 !important;
+            visibility: visible !important;
+        }
+        
+        body.dashboard-login-page button {
+            display: block !important;
+            opacity: 1 !important;
+            visibility: visible !important;
+        }
+        
+        body.dashboard-login-page .login-icon {
+            display: flex !important;
+        }
+        
+        body.dashboard-login-page .back-link {
+            display: block !important;
+        }
+    </style>
+</head>
+<body class="dashboard-login-page" style="opacity: 1 !important; visibility: visible !important;">
+    <div class="login-container" style="opacity: 1 !important; visibility: visible !important; display: block !important;">
+        <div class="login-header" style="opacity: 1 !important; visibility: visible !important; display: block !important;">
+            <div class="login-icon" style="opacity: 1 !important; visibility: visible !important; display: flex !important;">
+                <i class="fas fa-lock" style="opacity: 1 !important; visibility: visible !important;"></i>
+            </div>
+            <h1 style="opacity: 1 !important; visibility: visible !important; display: block !important; color: #2c3e50 !important;">
+                {% if current_lang == 'ar' %}
+                    تسجيل الدخول
+                {% else %}
+                    Login
+                {% endif %}
+            </h1>
+            <p style="opacity: 1 !important; visibility: visible !important; display: block !important; color: #6c757d !important;">
+                {% if current_lang == 'ar' %}
+                    لوحة التحكم - Elegant
+                {% else %}
+                    Dashboard - Elegant
+                {% endif %}
+            </p>
+        </div>
+        
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}" style="opacity: 1 !important; visibility: visible !important; display: block !important;">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        
+        <form method="POST" action="{{ url_for('dashboard_login') }}" style="opacity: 1 !important; visibility: visible !important; display: block !important;">
+            <div class="form-group" style="opacity: 1 !important; visibility: visible !important; display: block !important;">
+                <label for="password" style="opacity: 1 !important; visibility: visible !important; display: block !important; color: #2c3e50 !important;">
+                    {% if current_lang == 'ar' %}
+                        كلمة المرور
+                    {% else %}
+                        Password
+                    {% endif %}
+                </label>
+                <input 
+                    type="password" 
+                    id="password" 
+                    name="password" 
+                    required
+                    autofocus
+                    placeholder="{% if current_lang == 'ar' %}أدخل كلمة المرور{% else %}Enter password{% endif %}"
+                    style="opacity: 1 !important; visibility: visible !important; display: block !important; width: 100% !important; padding: 0.75rem 1rem !important; border: 2px solid #e9ecef !important; border-radius: 10px !important;"
+                >
+            </div>
+            
+            <button type="submit" class="login-btn" style="opacity: 1 !important; visibility: visible !important; display: block !important; width: 100% !important; padding: 0.75rem !important; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important; color: white !important; border: none !important; border-radius: 10px !important; cursor: pointer !important;">
+                <i class="fas fa-sign-in-alt" style="opacity: 1 !important; visibility: visible !important;"></i>
+                {% if current_lang == 'ar' %}
+                    تسجيل الدخول
+                {% else %}
+                    Login
+                {% endif %}
+            </button>
+        </form>
+        
+        <div class="back-link" style="opacity: 1 !important; visibility: visible !important; display: block !important; text-align: center !important; margin-top: 1.5rem !important;">
+            <a href="{{ url_for('index') }}" style="opacity: 1 !important; visibility: visible !important; display: inline-block !important; color: #667eea !important; text-decoration: none !important;">
+                <i class="fas fa-arrow-{% if current_lang == 'ar' %}right{% else %}left{% endif %}" style="opacity: 1 !important; visibility: visible !important;"></i>
+                {% if current_lang == 'ar' %}
+                    العودة للصفحة الرئيسية
+                {% else %}
+                    Back to Home
+                {% endif %}
+            </a>
+        </div>
+    </div>
+</body>
+</html>
+

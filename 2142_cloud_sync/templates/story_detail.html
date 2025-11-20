@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="{% if current_lang == 'ar' %}ar{% else %}en{% endif %}" dir="{% if current_lang == 'ar' %}rtl{% else %}ltr{% endif %}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        {% if current_lang == 'ar' %}
+            {{ story.title_ar or story.title_en or story.title or 'قصة نجاح' }} - Elegant
+        {% else %}
+            {{ story.title_en or story.title_ar or story.title or 'Success Story' }} - Elegant
+        {% endif %}
+    </title>
+    <link href="{{ url_for('static', filename='tooplate-cloud-sync-style.css') }}" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: var(--surface, #f8f9fa);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            position: relative;
+        }
+        
+        /* Add floating shapes background like other pages */
+        .floating-shapes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+            pointer-events: none;
+        }
+        
+        .floating-shapes .shape {
+            position: absolute;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            animation: float 20s infinite ease-in-out;
+        }
+        
+        .floating-shapes .shape:nth-child(1) {
+            width: 300px;
+            height: 300px;
+            top: 10%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+        
+        .floating-shapes .shape:nth-child(2) {
+            width: 200px;
+            height: 200px;
+            top: 60%;
+            right: 10%;
+            animation-delay: 5s;
+        }
+        
+        .floating-shapes .shape:nth-child(3) {
+            width: 250px;
+            height: 250px;
+            bottom: 10%;
+            left: 50%;
+            animation-delay: 10s;
+        }
+        
+        @keyframes float {
+            0%, 100% {
+                transform: translate(0, 0) rotate(0deg);
+                opacity: 0.3;
+            }
+            33% {
+                transform: translate(30px, -30px) rotate(120deg);
+                opacity: 0.5;
+            }
+            66% {
+                transform: translate(-20px, 20px) rotate(240deg);
+                opacity: 0.4;
+            }
+        }
+        
+        /* Hero background like other pages */
+        .hero-backgrounds {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            overflow: hidden;
+        }
+        
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.1;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            filter: blur(3px);
+        }
+        
+        .hero-bg:nth-child(1) {
+            background-image: url('/static/images/tooplate-cloud-sync-bg01.jpg');
+        }
+        
+        .hero-bg:nth-child(2) {
+            background-image: url('/static/images/tooplate-cloud-sync-bg02.jpg');
+        }
+        
+        .hero-bg:nth-child(3) {
+            background-image: url('/static/images/tooplate-cloud-sync-bg03.jpg');
+        }
+        .story-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            margin: 2rem auto;
+            padding: 2rem;
+            max-width: 900px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .container {
+            position: relative;
+            z-index: 1;
+        }
+        .story-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 2px solid #f8f9fa;
+        }
+        .story-title {
+            color: #2c3e50;
+            font-weight: 700;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        .story-author {
+            color: #6c757d;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+        .story-date {
+            color: #adb5bd;
+            font-size: 0.9rem;
+        }
+        .story-video {
+            margin: 2rem 0;
+            text-align: center;
+            width: 100%;
+        }
+        .story-video video {
+            width: 100%;
+            max-width: 100%;
+            height: auto;
+            min-height: 400px;
+            max-height: 600px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            object-fit: contain;
+            background: #000;
+        }
+        
+        @media (min-width: 768px) {
+            .story-video video {
+                min-height: 500px;
+                max-height: 700px;
+            }
+        }
+        .story-image {
+            text-align: center;
+            margin: 2rem 0;
+        }
+        .story-image img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        .story-content {
+            color: #495057;
+            line-height: 1.8;
+            font-size: 1.1rem;
+            text-align: justify;
+            margin: 2rem 0;
+            white-space: pre-wrap;
+        }
+        .story-actions {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 2px solid #f8f9fa;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 10px;
+            padding: 12px 30px;
+            font-weight: 600;
+            margin: 0 0.5rem;
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+        }
+        .btn-secondary {
+            border-radius: 10px;
+            padding: 12px 30px;
+            font-weight: 600;
+            margin: 0 0.5rem;
+        }
+        .back-btn {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 50px;
+            padding: 8px 16px;
+            text-decoration: none;
+            color: #2c3e50;
+            font-weight: 600;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .back-btn:hover {
+            background: white;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            color: #667eea;
+        }
+        .story-meta {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 1rem;
+            margin: 1rem 0;
+            text-align: center;
+        }
+        .story-meta i {
+            color: #667eea;
+        }
+        .story-meta i.margin-left {
+            margin-left: 0.5rem;
+        }
+        .story-meta i.margin-right {
+            margin-right: 0.5rem;
+        }
+        .video-caption {
+            text-align: center;
+            color: #6c757d;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+            font-style: italic;
+        }
+        
+        /* Force ALL text and content to be visible - Override CSS file rules */
+        body.story-detail-page h1,
+        body.story-detail-page h2,
+        body.story-detail-page h3,
+        body.story-detail-page h4,
+        body.story-detail-page h5,
+        body.story-detail-page h6,
+        body.story-detail-page p,
+        body.story-detail-page span,
+        body.story-detail-page div,
+        body.story-detail-page li,
+        body.story-detail-page a,
+        body.story-detail-page strong,
+        body.story-detail-page video,
+        body.story-detail-page img {
+            opacity: 1 !important;
+            visibility: visible !important;
+            transform: translateY(0) !important;
+            display: block !important;
+        }
+        
+        body.story-detail-page .story-container,
+        body.story-detail-page .story-container * {
+            opacity: 1 !important;
+            visibility: visible !important;
+            transform: translate(0, 0) !important;
+        }
+        
+        body.story-detail-page .story-title,
+        body.story-detail-page .story-author,
+        body.story-detail-page .story-date,
+        body.story-detail-page .story-content,
+        body.story-detail-page .story-video,
+        body.story-detail-page .story-image,
+        body.story-detail-page .story-meta,
+        body.story-detail-page .story-actions {
+            opacity: 1 !important;
+            visibility: visible !important;
+            display: block !important;
+        }
+        
+        body.story-detail-page video {
+            opacity: 1 !important;
+            visibility: visible !important;
+            display: block !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            height: auto !important;
+            min-height: 400px !important;
+            max-height: 600px !important;
+            background: #000 !important;
+            object-fit: contain !important;
+        }
+        
+        @media (min-width: 768px) {
+            body.story-detail-page video {
+                min-height: 500px !important;
+                max-height: 700px !important;
+            }
+        }
+        
+        body.story-detail-page .story-video {
+            opacity: 1 !important;
+            visibility: visible !important;
+            display: block !important;
+            margin: 2rem 0 !important;
+            width: 100% !important;
+        }
+        
+        body.story-detail-page img {
+            opacity: 1 !important;
+            visibility: visible !important;
+            display: block !important;
+            max-width: 100% !important;
+            height: auto !important;
+        }
+        
+        body.story-detail-page .story-image {
+            opacity: 1 !important;
+            visibility: visible !important;
+            display: block !important;
+            margin: 2rem 0 !important;
+        }
+        
+        /* Hero background images */
+        body.story-detail-page .hero-backgrounds {
+            opacity: 1 !important;
+            visibility: visible !important;
+            display: block !important;
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            width: 100% !important;
+            height: 100% !important;
+            z-index: 0 !important;
+            overflow: hidden !important;
+        }
+        
+        body.story-detail-page .hero-bg {
+            opacity: 0.1 !important;
+            visibility: visible !important;
+            display: block !important;
+            position: absolute !important;
+            top: 0 !important;
+            left: 0 !important;
+            width: 100% !important;
+            height: 100% !important;
+            background-size: cover !important;
+            background-position: center !important;
+            background-repeat: no-repeat !important;
+            filter: blur(3px) !important;
+        }
+        
+        body.story-detail-page .hero-bg:nth-child(1) {
+            background-image: url('/static/images/tooplate-cloud-sync-bg01.jpg') !important;
+        }
+        
+        body.story-detail-page .hero-bg:nth-child(2) {
+            background-image: url('/static/images/tooplate-cloud-sync-bg02.jpg') !important;
+        }
+        
+        body.story-detail-page .hero-bg:nth-child(3) {
+            background-image: url('/static/images/tooplate-cloud-sync-bg03.jpg') !important;
+        }
+        
+        /* Override scroll-animate class */
+        body.story-detail-page .scroll-animate {
+            opacity: 1 !important;
+            visibility: visible !important;
+            transform: translate(0, 0) !important;
+        }
+        
+        /* Ensure buttons are visible */
+        body.story-detail-page .btn,
+        body.story-detail-page .back-btn {
+            opacity: 1 !important;
+            visibility: visible !important;
+            transform: translateY(0) !important;
+        }
+    </style>
+</head>
+<body class="story-detail-page">
+    <!-- Floating Shapes Background -->
+    <div class="floating-shapes">
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div>
+    
+    <!-- Hero Background -->
+    <div class="hero-backgrounds" style="opacity: 1 !important; visibility: visible !important; display: block !important; position: fixed !important; top: 0 !important; left: 0 !important; width: 100% !important; height: 100% !important; z-index: 0 !important; overflow: hidden !important;">
+        <div class="hero-bg" style="opacity: 0.1 !important; visibility: visible !important; display: block !important; position: absolute !important; top: 0 !important; left: 0 !important; width: 100% !important; height: 100% !important; background-image: url('/static/images/tooplate-cloud-sync-bg01.jpg') !important; background-size: cover !important; background-position: center !important; background-repeat: no-repeat !important; filter: blur(3px) !important;"></div>
+        <div class="hero-bg" style="opacity: 0.1 !important; visibility: visible !important; display: block !important; position: absolute !important; top: 0 !important; left: 0 !important; width: 100% !important; height: 100% !important; background-image: url('/static/images/tooplate-cloud-sync-bg02.jpg') !important; background-size: cover !important; background-position: center !important; background-repeat: no-repeat !important; filter: blur(3px) !important;"></div>
+        <div class="hero-bg" style="opacity: 0.1 !important; visibility: visible !important; display: block !important; position: absolute !important; top: 0 !important; left: 0 !important; width: 100% !important; height: 100% !important; background-image: url('/static/images/tooplate-cloud-sync-bg03.jpg') !important; background-size: cover !important; background-position: center !important; background-repeat: no-repeat !important; filter: blur(3px) !important;"></div>
+    </div>
+    
+    <div class="container">
+        <div class="story-container">
+            <a href="{{ url_for('index') }}#about" class="back-btn">
+                <i class="fas fa-arrow-{% if current_lang == 'ar' %}right{% else %}left{% endif %}"></i> 
+                {% if current_lang == 'ar' %}العودة للقصص{% else %}Back to Stories{% endif %}
+            </a>
+
+            <div class="story-header">
+                <h1 class="story-title" style="color: #2c3e50 !important; font-size: 2.5rem;">
+                    {% if current_lang == 'ar' %}
+                        {{ story['title_ar'] or story['title_en'] or story['title'] or 'قصة بدون عنوان' }}
+                    {% else %}
+                        {{ story['title_en'] or story['title_ar'] or story['title'] or 'Untitled Story' }}
+                    {% endif %}
+                </h1>
+                
+                {% if story['author_name_ar'] or story['author_name_en'] or story['name'] %}
+                <p class="story-author">
+                    <i class="fas fa-user"></i> 
+                    {% if current_lang == 'ar' %}
+                        بواسطة: {{ story['author_name_ar'] or story['author_name_en'] or story['name'] or '' }}
+                    {% else %}
+                        By: {{ story['author_name_en'] or story['author_name_ar'] or story['name'] or '' }}
+                    {% endif %}
+                </p>
+                {% endif %}
+                
+                <p class="story-date">
+                    <i class="fas fa-calendar"></i> 
+                    {{ story['story_date'] or story['created_at'] or '' }}
+                </p>
+            </div>
+
+            <!-- Video Section (if available) -->
+            {% if story['video_path'] %}
+            <div class="story-video" style="opacity: 1 !important; visibility: visible !important; display: block !important; margin: 2rem 0; width: 100%;">
+                <video controls preload="metadata" style="width: 100% !important; max-width: 100% !important; height: auto !important; min-height: 400px !important; max-height: 600px !important; opacity: 1 !important; visibility: visible !important; display: block !important; background: #000 !important; border-radius: 15px !important; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2) !important; object-fit: contain !important;">
+                    <source src="{{ story['video_path'] }}" type="video/mp4">
+                    <source src="{{ story['video_path'] }}" type="video/webm">
+                    {% if current_lang == 'ar' %}
+                        متصفحك لا يدعم عرض الفيديو.
+                    {% else %}
+                        Your browser does not support the video tag.
+                    {% endif %}
+                </video>
+                <p class="video-caption" style="opacity: 1 !important; visibility: visible !important; margin-top: 1rem;">
+                    <i class="fas fa-video"></i>
+                    {% if current_lang == 'ar' %}
+                        فيديو القصة
+                    {% else %}
+                        Story Video
+                    {% endif %}
+                </p>
+            </div>
+            {% endif %}
+
+            <!-- Image Section (if available) -->
+            {% if story['image_url'] %}
+            <div class="story-image" style="opacity: 1 !important; visibility: visible !important; display: block !important; margin: 2rem 0;">
+                <img src="{{ story['image_url'] }}" alt="{{ story['title_ar'] if current_lang == 'ar' else story['title_en'] }}" class="img-fluid" style="opacity: 1 !important; visibility: visible !important; display: block !important; max-width: 100% !important; height: auto !important;">
+            </div>
+            {% endif %}
+
+            <!-- Story Content -->
+            <div class="story-content">
+                {% if current_lang == 'ar' %}
+                    {{ story['content_ar'] or story['content_en'] or story['content'] or 'لا يوجد محتوى' }}
+                {% else %}
+                    {{ story['content_en'] or story['content_ar'] or story['content'] or 'No content available' }}
+                {% endif %}
+            </div>
+
+            <div class="story-meta">
+                <p>
+                    <i class="fas fa-book {% if current_lang == 'ar' %}margin-left{% else %}margin-right{% endif %}"></i> 
+                    {% if current_lang == 'ar' %}
+                        قصة نجاح من عملاء Elegant
+                    {% else %}
+                        Success story from Elegant clients
+                    {% endif %}
+                </p>
+            </div>
+
+            <div class="story-actions">
+                <a href="{{ url_for('stories_page') }}" class="btn btn-primary">
+                    <i class="fas fa-book-open"></i> 
+                    {% if current_lang == 'ar' %}جميع القصص{% else %}All Stories{% endif %}
+                </a>
+                <a href="{{ url_for('index') }}" class="btn btn-primary">
+                    <i class="fas fa-home"></i> 
+                    {% if current_lang == 'ar' %}الصفحة الرئيسية{% else %}Home{% endif %}
+                </a>
+                <a href="{{ url_for('index') }}#contact" class="btn btn-secondary">
+                    <i class="fas fa-envelope"></i> 
+                    {% if current_lang == 'ar' %}تواصل معنا{% else %}Contact Us{% endif %}
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Force all content to be visible immediately - NO DELAY
+        document.addEventListener('DOMContentLoaded', function() {
+            // Make ALL text elements visible
+            const allTextElements = document.querySelectorAll('h1, h2, h3, h4, h5, h6, p, span, div, li, ul, ol, strong, a, video, img');
+            allTextElements.forEach(element => {
+                element.style.setProperty('opacity', '1', 'important');
+                element.style.setProperty('visibility', 'visible', 'important');
+                element.style.setProperty('transform', 'translate(0, 0)', 'important');
+                element.style.setProperty('display', 'block', 'important');
+            });
+            
+            // Force story container and all its children visible
+            const storyContainer = document.querySelector('.story-container');
+            if (storyContainer) {
+                storyContainer.style.setProperty('opacity', '1', 'important');
+                storyContainer.style.setProperty('visibility', 'visible', 'important');
+                const children = storyContainer.querySelectorAll('*');
+                children.forEach(child => {
+                    child.style.setProperty('opacity', '1', 'important');
+                    child.style.setProperty('visibility', 'visible', 'important');
+                    child.style.setProperty('transform', 'translate(0, 0)', 'important');
+                });
+            }
+            
+            // Force video elements visible
+            const videos = document.querySelectorAll('video');
+            videos.forEach(video => {
+                video.style.setProperty('opacity', '1', 'important');
+                video.style.setProperty('visibility', 'visible', 'important');
+                video.style.setProperty('display', 'block', 'important');
+                video.style.setProperty('width', '100%', 'important');
+                video.style.setProperty('max-width', '100%', 'important');
+                video.style.setProperty('height', 'auto', 'important');
+                video.style.setProperty('min-height', '400px', 'important');
+                video.style.setProperty('max-height', '600px', 'important');
+                video.style.setProperty('background', '#000', 'important');
+                video.style.setProperty('object-fit', 'contain', 'important');
+                
+                // For larger screens
+                if (window.innerWidth >= 768) {
+                    video.style.setProperty('min-height', '500px', 'important');
+                    video.style.setProperty('max-height', '700px', 'important');
+                }
+            });
+            
+            // Force video container visible
+            const videoContainers = document.querySelectorAll('.story-video');
+            videoContainers.forEach(container => {
+                container.style.setProperty('opacity', '1', 'important');
+                container.style.setProperty('visibility', 'visible', 'important');
+                container.style.setProperty('display', 'block', 'important');
+                container.style.setProperty('margin', '2rem 0', 'important');
+            });
+            
+            // Force image elements visible
+            const images = document.querySelectorAll('img');
+            images.forEach(img => {
+                img.style.setProperty('opacity', '1', 'important');
+                img.style.setProperty('visibility', 'visible', 'important');
+                img.style.setProperty('display', 'block', 'important');
+                img.style.setProperty('max-width', '100%', 'important');
+                img.style.setProperty('height', 'auto', 'important');
+            });
+            
+            // Force image container visible
+            const imageContainers = document.querySelectorAll('.story-image');
+            imageContainers.forEach(container => {
+                container.style.setProperty('opacity', '1', 'important');
+                container.style.setProperty('visibility', 'visible', 'important');
+                container.style.setProperty('display', 'block', 'important');
+                container.style.setProperty('margin', '2rem 0', 'important');
+            });
+            
+            // Force hero background visible
+            const heroBackgrounds = document.querySelectorAll('.hero-backgrounds');
+            heroBackgrounds.forEach(bg => {
+                bg.style.setProperty('opacity', '1', 'important');
+                bg.style.setProperty('visibility', 'visible', 'important');
+                bg.style.setProperty('display', 'block', 'important');
+                bg.style.setProperty('position', 'fixed', 'important');
+                bg.style.setProperty('top', '0', 'important');
+                bg.style.setProperty('left', '0', 'important');
+                bg.style.setProperty('width', '100%', 'important');
+                bg.style.setProperty('height', '100%', 'important');
+                bg.style.setProperty('z-index', '0', 'important');
+            });
+            
+            const heroBgs = document.querySelectorAll('.hero-bg');
+            heroBgs.forEach((bg, index) => {
+                bg.style.setProperty('opacity', '0.1', 'important');
+                bg.style.setProperty('visibility', 'visible', 'important');
+                bg.style.setProperty('display', 'block', 'important');
+                bg.style.setProperty('position', 'absolute', 'important');
+                bg.style.setProperty('top', '0', 'important');
+                bg.style.setProperty('left', '0', 'important');
+                bg.style.setProperty('width', '100%', 'important');
+                bg.style.setProperty('height', '100%', 'important');
+                bg.style.setProperty('background-size', 'cover', 'important');
+                bg.style.setProperty('background-position', 'center', 'important');
+                bg.style.setProperty('background-repeat', 'no-repeat', 'important');
+                bg.style.setProperty('filter', 'blur(3px)', 'important');
+                
+                // Set background images
+                const images = [
+                    '/static/images/tooplate-cloud-sync-bg01.jpg',
+                    '/static/images/tooplate-cloud-sync-bg02.jpg',
+                    '/static/images/tooplate-cloud-sync-bg03.jpg'
+                ];
+                if (images[index]) {
+                    bg.style.setProperty('background-image', `url('${images[index]}')`, 'important');
+                }
+            });
+            
+            // Force buttons visible
+            const buttons = document.querySelectorAll('.btn, .back-btn, a');
+            buttons.forEach(btn => {
+                btn.style.setProperty('opacity', '1', 'important');
+                btn.style.setProperty('visibility', 'visible', 'important');
+                btn.style.setProperty('transform', 'translateY(0)', 'important');
+            });
+            
+            // Force story sections visible
+            const storySections = document.querySelectorAll('.story-header, .story-title, .story-author, .story-date, .story-content, .story-video, .story-image, .story-meta, .story-actions');
+            storySections.forEach(section => {
+                section.style.setProperty('opacity', '1', 'important');
+                section.style.setProperty('visibility', 'visible', 'important');
+                section.style.setProperty('display', 'block', 'important');
+            });
+        });
+        
+        // Also run immediately (before DOMContentLoaded)
+        (function() {
+            const style = document.createElement('style');
+            style.textContent = `
+                body.story-detail-page * {
+                    opacity: 1 !important;
+                    visibility: visible !important;
+                    transform: translate(0, 0) !important;
+                }
+                body.story-detail-page video,
+                body.story-detail-page img {
+                    display: block !important;
+                    opacity: 1 !important;
+                    visibility: visible !important;
+                }
+                body.story-detail-page .story-video,
+                body.story-detail-page .story-image {
+                    display: block !important;
+                    opacity: 1 !important;
+                    visibility: visible !important;
+                }
+                body.story-detail-page .hero-backgrounds {
+                    opacity: 1 !important;
+                    visibility: visible !important;
+                    display: block !important;
+                    position: fixed !important;
+                    top: 0 !important;
+                    left: 0 !important;
+                    width: 100% !important;
+                    height: 100% !important;
+                    z-index: 0 !important;
+                }
+                body.story-detail-page .hero-bg {
+                    opacity: 0.1 !important;
+                    visibility: visible !important;
+                    display: block !important;
+                    position: absolute !important;
+                    top: 0 !important;
+                    left: 0 !important;
+                    width: 100% !important;
+                    height: 100% !important;
+                    background-size: cover !important;
+                    background-position: center !important;
+                    background-repeat: no-repeat !important;
+                    filter: blur(3px) !important;
+                }
+                body.story-detail-page .hero-bg:nth-child(1) {
+                    background-image: url('/static/images/tooplate-cloud-sync-bg01.jpg') !important;
+                }
+                body.story-detail-page .hero-bg:nth-child(2) {
+                    background-image: url('/static/images/tooplate-cloud-sync-bg02.jpg') !important;
+                }
+                body.story-detail-page .hero-bg:nth-child(3) {
+                    background-image: url('/static/images/tooplate-cloud-sync-bg03.jpg') !important;
+                }
+            `;
+            document.head.appendChild(style);
+        })();
+        
+        // Additional video loading check
+        document.addEventListener('DOMContentLoaded', function() {
+            const videos = document.querySelectorAll('video');
+            videos.forEach(video => {
+                // Force video to load
+                video.load();
+                
+                // Log video source for debugging
+                const sources = video.querySelectorAll('source');
+                sources.forEach(source => {
+                    console.log('Video source:', source.src);
+                });
+                
+                // Add error handler
+                video.addEventListener('error', function(e) {
+                    console.error('Video error:', e);
+                    console.error('Video source:', video.querySelector('source')?.src);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

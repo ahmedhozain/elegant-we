@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="{% if current_lang == 'ar' %}ar{% else %}en{% endif %}" dir="{% if current_lang == 'ar' %}rtl{% else %}ltr{% endif %}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% if current_lang == 'ar' %}إدارة المحتوى - Elegant{% else %}Content Management - Elegant{% endif %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .dashboard-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            margin: 2rem auto;
+            padding: 2rem;
+        }
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #f8f9fa;
+        }
+        .page-header h1 {
+            color: #2c3e50;
+            font-weight: 700;
+            margin: 0;
+        }
+        .content-section {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border: 1px solid #e9ecef;
+        }
+        .content-section:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+        .section-title {
+            color: #2c3e50;
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin: 0;
+        }
+        .section-preview {
+            color: #6c757d;
+            font-size: 0.9rem;
+            margin: 0.5rem 0;
+            line-height: 1.5;
+        }
+        .section-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        .btn-sm {
+            padding: 0.4rem 0.8rem;
+            font-size: 0.8rem;
+            border-radius: 8px;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+        }
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+        .back-btn {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 50px;
+            padding: 8px 16px;
+            text-decoration: none;
+            color: #2c3e50;
+            font-weight: 600;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .back-btn:hover {
+            background: white;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            color: #667eea;
+        }
+        .section-info {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+        .section-info h6 {
+            color: #495057;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        .section-info p {
+            color: #6c757d;
+            font-size: 0.9rem;
+            margin: 0;
+        }
+        .language-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .lang-tab {
+            padding: 0.5rem 1rem;
+            border: 2px solid #e9ecef;
+            border-radius: 20px;
+            background: white;
+            color: #6c757d;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .lang-tab.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: #667eea;
+        }
+        .page-tabs {
+            background: white;
+            border-radius: 15px;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        .nav-pills .nav-link {
+            border-radius: 25px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin: 0 0.25rem;
+        }
+        .nav-pills .nav-link.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .nav-pills .nav-link:hover {
+            background: #f8f9fa;
+            color: #667eea;
+        }
+        .tab-content {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="dashboard-container">
+            <a href="{{ url_for('dashboard') }}" class="back-btn">
+                <i class="fas fa-arrow-right"></i> {% if current_lang == 'ar' %}العودة للوحة التحكم{% else %}Back to Dashboard{% endif %}
+            </a>
+
+            <div class="page-header">
+                <div>
+                    <h1><i class="fas fa-edit"></i> {% if current_lang == 'ar' %}إدارة المحتوى{% else %}Content Management{% endif %}</h1>
+                    <p class="text-muted">{% if current_lang == 'ar' %}تحرير وتعديل محتوى جميع صفحات الموقع{% else %}Edit and modify content for all website pages{% endif %}</p>
+                </div>
+            </div>
+
+            <!-- Page Selection Tabs -->
+            <div class="page-tabs mb-4">
+                <div class="nav nav-pills nav-fill" id="page-tabs" role="tablist">
+                    <button class="nav-link active" id="index-tab" data-bs-toggle="pill" data-bs-target="#index-content" type="button" role="tab">
+                        <i class="fas fa-home"></i> {% if current_lang == 'ar' %}الصفحة الرئيسية{% else %}Home Page{% endif %}
+                    </button>
+                    <button class="nav-link" id="services-tab" data-bs-toggle="pill" data-bs-target="#services-content" type="button" role="tab">
+                        <i class="fas fa-briefcase"></i> {% if current_lang == 'ar' %}الخدمات{% else %}Services{% endif %}
+                    </button>
+                    <button class="nav-link" id="about-tab" data-bs-toggle="pill" data-bs-target="#about-content" type="button" role="tab">
+                        <i class="fas fa-info-circle"></i> {% if current_lang == 'ar' %}من نحن{% else %}About Us{% endif %}
+                    </button>
+                    <button class="nav-link" id="contact-tab" data-bs-toggle="pill" data-bs-target="#contact-content" type="button" role="tab">
+                        <i class="fas fa-envelope"></i> {% if current_lang == 'ar' %}تواصل معنا{% else %}Contact{% endif %}
+                    </button>
+                </div>
+            </div>
+
+            <!-- Tab Content -->
+            <div class="tab-content" id="page-tabsContent">
+                <!-- Home Page Content -->
+                <div class="tab-pane fade show active" id="index-content" role="tabpanel">
+                    <div class="row">
+                        {% for section in sections %}
+                        {% if section.page_name == 'index' %}
+                        <div class="col-md-6 col-lg-4 mb-3">
+                            <div class="content-section">
+                                <div class="section-header">
+                                    <div>
+                                        <h3 class="section-title">
+                                            {% if current_lang == 'ar' %}
+                                                {% if section.section_key == 'hero_title' %}العنوان الرئيسي{% endif %}
+                                                {% if section.section_key == 'hero_subtitle' %}العنوان الفرعي{% endif %}
+                                                {% if section.section_key == 'services_title' %}عنوان الخدمات{% endif %}
+                                                {% if section.section_key == 'about_title' %}عنوان القصص{% endif %}
+                                                {% if section.section_key == 'contact_title' %}عنوان التواصل{% endif %}
+                                                {% if section.section_key == 'nav_home' %}الرئيسية (القائمة){% endif %}
+                                                {% if section.section_key == 'nav_services' %}الخدمات (القائمة){% endif %}
+                                                {% if section.section_key == 'nav_about' %}من نحن (القائمة){% endif %}
+                                                {% if section.section_key == 'nav_stories' %}القصص (القائمة){% endif %}
+                                                {% if section.section_key == 'nav_contact' %}تواصل معنا (القائمة){% endif %}
+                                                {% if section.section_key == 'main_services_title' %}عنوان الخدمات الرئيسية{% endif %}
+                                                {% if section.section_key == 'translation_title' %}عنوان خدمات الترجمة{% endif %}
+                                                {% if section.section_key == 'why_choose_us_title' %}لماذا تختارنا{% endif %}
+                                                {% if section.section_key == 'consultation_title' %}طلب الاستشارة{% endif %}
+                                                {% if section.section_key == 'quick_contact_title' %}التواصل السريع{% endif %}
+                                                {% if section.section_key == 'our_offices_title' %}مكاتبنا{% endif %}
+                                                {{ section.section_key }}
+                                            {% else %}
+                                                {% if section.section_key == 'hero_title' %}Hero Title{% endif %}
+                                                {% if section.section_key == 'hero_subtitle' %}Hero Subtitle{% endif %}
+                                                {% if section.section_key == 'services_title' %}Services Title{% endif %}
+                                                {% if section.section_key == 'about_title' %}Stories Title{% endif %}
+                                                {% if section.section_key == 'contact_title' %}Contact Title{% endif %}
+                                                {% if section.section_key == 'nav_home' %}Home (Menu){% endif %}
+                                                {% if section.section_key == 'nav_services' %}Services (Menu){% endif %}
+                                                {% if section.section_key == 'nav_about' %}About Us (Menu){% endif %}
+                                                {% if section.section_key == 'nav_stories' %}Stories (Menu){% endif %}
+                                                {% if section.section_key == 'nav_contact' %}Contact (Menu){% endif %}
+                                                {% if section.section_key == 'main_services_title' %}Main Services Title{% endif %}
+                                                {% if section.section_key == 'translation_title' %}Translation Services Title{% endif %}
+                                                {% if section.section_key == 'why_choose_us_title' %}Why Choose Us{% endif %}
+                                                {% if section.section_key == 'consultation_title' %}Request Consultation{% endif %}
+                                                {% if section.section_key == 'quick_contact_title' %}Quick Contact{% endif %}
+                                                {% if section.section_key == 'our_offices_title' %}Our Offices{% endif %}
+                                                {{ section.section_key }}
+                                            {% endif %}
+                                        </h3>
+                                        <p class="section-preview">
+                                            {% if current_lang == 'ar' %}
+                                                {{ section.title_ar or section.title_en or 'لا يوجد عنوان' }}
+                                            {% else %}
+                                                {{ section.title_en or section.title_ar or 'No title' }}
+                                            {% endif %}
+                                        </p>
+                                    </div>
+                                </div>
+                                
+                                <div class="section-info">
+                                    <h6>{% if current_lang == 'ar' %}المحتوى الحالي:{% else %}Current Content:{% endif %}</h6>
+                                    <p>
+                                        {% if current_lang == 'ar' %}
+                                            {{ (section.content_ar or section.content_en or 'لا يوجد محتوى')[:100] }}{% if (section.content_ar or section.content_en) and (section.content_ar or section.content_en)|length > 100 %}...{% endif %}
+                                        {% else %}
+                                            {{ (section.content_en or section.content_ar or 'No content')[:100] }}{% if (section.content_en or section.content_ar) and (section.content_en or section.content_ar)|length > 100 %}...{% endif %}
+                                        {% endif %}
+                                    </p>
+                                </div>
+                                
+                                <div class="section-actions">
+                                    <a href="{{ url_for('edit_content', section_id=section.id) }}" 
+                                       class="btn btn-primary btn-sm">
+                                        <i class="fas fa-edit"></i> {% if current_lang == 'ar' %}تعديل{% else %}Edit{% endif %}
+                                    </a>
+                                </div>
+                                
+                                <small class="text-muted">
+                                    <i class="fas fa-clock"></i> 
+                                    {{ section.updated_at }}
+                                </small>
+                            </div>
+                        </div>
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- Services Page Content -->
+                <div class="tab-pane fade" id="services-content" role="tabpanel">
+                    <div class="text-center py-5">
+                        <i class="fas fa-briefcase" style="font-size: 4rem; color: #dee2e6; margin-bottom: 1rem;"></i>
+                        <h3>{% if current_lang == 'ar' %}صفحة الخدمات{% else %}Services Page{% endif %}</h3>
+                        <p class="text-muted">{% if current_lang == 'ar' %}سيتم إضافة إدارة محتوى صفحة الخدمات قريباً{% else %}Services page content management will be added soon{% endif %}</p>
+                    </div>
+                </div>
+
+                <!-- About Page Content -->
+                <div class="tab-pane fade" id="about-content" role="tabpanel">
+                    <div class="text-center py-5">
+                        <i class="fas fa-info-circle" style="font-size: 4rem; color: #dee2e6; margin-bottom: 1rem;"></i>
+                        <h3>{% if current_lang == 'ar' %}صفحة من نحن{% else %}About Us Page{% endif %}</h3>
+                        <p class="text-muted">{% if current_lang == 'ar' %}سيتم إضافة إدارة محتوى صفحة من نحن قريباً{% else %}About us page content management will be added soon{% endif %}</p>
+                    </div>
+                </div>
+
+                <!-- Contact Page Content -->
+                <div class="tab-pane fade" id="contact-content" role="tabpanel">
+                    <div class="text-center py-5">
+                        <i class="fas fa-envelope" style="font-size: 4rem; color: #dee2e6; margin-bottom: 1rem;"></i>
+                        <h3>{% if current_lang == 'ar' %}صفحة التواصل{% else %}Contact Page{% endif %}</h3>
+                        <p class="text-muted">{% if current_lang == 'ar' %}سيتم إضافة إدارة محتوى صفحة التواصل قريباً{% else %}Contact page content management will be added soon{% endif %}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

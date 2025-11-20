@@ -1,0 +1,1128 @@
+<!DOCTYPE html>
+<html lang="{% if current_lang == 'ar' %}ar{% else %}en{% endif %}" dir="{% if current_lang == 'ar' %}rtl{% else %}ltr{% endif %}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% if current_lang == 'ar' %}خدمات الترجمة المعتمدة - Elegant{% else %}Certified Translation Services - Elegant{% endif %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='tooplate-cloud-sync-style.css') }}">
+    <style>
+        /* CRITICAL: Force ALL text to be visible - Must override CSS file rules */
+        /* Override ALL global animation rules that hide text */
+        body.certified-translation-page h1,
+        body.certified-translation-page h2,
+        body.certified-translation-page h3,
+        body.certified-translation-page h4,
+        body.certified-translation-page h5,
+        body.certified-translation-page h6 {
+            opacity: 1 !important;
+            visibility: visible !important;
+            transform: translateY(0) !important;
+            display: block !important;
+        }
+        
+        body.certified-translation-page p,
+        body.certified-translation-page span,
+        body.certified-translation-page div,
+        body.certified-translation-page li,
+        body.certified-translation-page a,
+        body.certified-translation-page strong,
+        body.certified-translation-page ul,
+        body.certified-translation-page ol {
+            opacity: 1 !important;
+            visibility: visible !important;
+            transform: translate(0, 0) !important;
+        }
+        
+        /* Service box content - HIGH SPECIFICITY */
+        body.certified-translation-page .service-box-content,
+        body.certified-translation-page .service-box-content h3,
+        body.certified-translation-page .service-box-content p,
+        body.certified-translation-page .service-box-content ul,
+        body.certified-translation-page .service-box-content li,
+        body.certified-translation-page .service-box-content ol,
+        body.certified-translation-page .service-box-content strong {
+            opacity: 1 !important;
+            visibility: visible !important;
+            color: #ffffff !important;
+            transform: translate(0, 0) !important;
+            display: block !important;
+        }
+        
+        body.certified-translation-page .service-box-content li {
+            display: list-item !important;
+        }
+        
+        body.certified-translation-page .service-box-with-bg .service-box-content h3 {
+            -webkit-text-fill-color: #ffffff !important;
+            background: none !important;
+            background-clip: unset !important;
+            -webkit-background-clip: unset !important;
+            opacity: 1 !important;
+            visibility: visible !important;
+            color: #ffffff !important;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8) !important;
+        }
+        
+        body.certified-translation-page .service-box-with-bg .service-box-content p,
+        body.certified-translation-page .service-box-with-bg .service-box-content ul,
+        body.certified-translation-page .service-box-with-bg .service-box-content li,
+        body.certified-translation-page .service-box-with-bg .service-box-content strong {
+            color: #ffffff !important;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8) !important;
+        }
+        
+        /* Hero section */
+        body.certified-translation-page .hero-content h1,
+        body.certified-translation-page .hero-content p {
+            opacity: 1 !important;
+            visibility: visible !important;
+            color: #1a1a1a !important;
+            transform: translateY(0) !important;
+            display: block !important;
+            text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.8) !important;
+        }
+        
+        /* Features header */
+        body.certified-translation-page .features-header h2,
+        body.certified-translation-page .features-header p {
+            opacity: 1 !important;
+            visibility: visible !important;
+            transform: translateY(0) !important;
+            display: block !important;
+            color: var(--text, #2c3e50) !important;
+        }
+        
+        /* Ensure all text in features section is visible */
+        body.certified-translation-page .features h2,
+        body.certified-translation-page .features p,
+        body.certified-translation-page .features-subtitle {
+            color: var(--text, #2c3e50) !important;
+        }
+        
+        /* All list items */
+        body.certified-translation-page .feature-checklist,
+        body.certified-translation-page .feature-checklist li {
+            opacity: 1 !important;
+            visibility: visible !important;
+            transform: translateY(0) !important;
+            display: list-item !important;
+        }
+        
+        /* Override scroll-animate class */
+        body.certified-translation-page .scroll-animate {
+            opacity: 1 !important;
+            visibility: visible !important;
+            transform: translate(0, 0) !important;
+        }
+        
+        /* Ensure service boxes are visible */
+        body.certified-translation-page .service-box,
+        body.certified-translation-page .service-box-with-bg {
+            opacity: 1 !important;
+            visibility: visible !important;
+            display: block !important;
+        }
+        
+        /* Override nav links */
+        body.certified-translation-page .nav-links a,
+        body.certified-translation-page .mobile-nav a {
+            opacity: 1 !important;
+            visibility: visible !important;
+            transform: translateY(0) !important;
+        }
+        
+        /* Override buttons */
+        body.certified-translation-page .cta-button,
+        body.certified-translation-page .explore-btn,
+        body.certified-translation-page .explore-btn-small,
+        body.certified-translation-page .submit-button {
+            opacity: 1 !important;
+            visibility: visible !important;
+            transform: translateY(0) !important;
+        }
+    </style>
+</head>
+<body class="certified-translation-page">
+    <!-- Floating Shapes Background -->
+    <div class="floating-shapes">
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <div class="logo">
+                <img src="{{ url_for('static', filename='images/logo.jpg') }}" alt="Elegant Logo" class="logo-img">
+                <span style="font-weight: 700; letter-spacing: 2px;">ELEGANT</span>
+            </div>
+            <div class="nav-links">
+                {% set nav_home = sections|selectattr('section_key', 'equalto', 'nav_home')|first %}
+                {% set nav_services = sections|selectattr('section_key', 'equalto', 'nav_services')|first %}
+                {% set nav_about = sections|selectattr('section_key', 'equalto', 'nav_about')|first %}
+                {% set nav_stories = sections|selectattr('section_key', 'equalto', 'nav_stories')|first %}
+                {% set nav_contact = sections|selectattr('section_key', 'equalto', 'nav_contact')|first %}
+                {% set nav_dashboard = sections|selectattr('section_key', 'equalto', 'nav_dashboard')|first %}
+                
+                <a href="{{ url_for('index') }}" class="nav-link-item">
+                    {% if current_lang == 'ar' %}
+                        {{ nav_home.title_ar if nav_home and nav_home.title_ar else 'الرئيسية' }}
+                    {% else %}
+                        {{ nav_home.title_en if nav_home and nav_home.title_en else 'Home' }}
+                    {% endif %}
+                </a>
+                <a href="{{ url_for('services') }}" class="nav-link-item">
+                    {% if current_lang == 'ar' %}
+                        {{ nav_services.title_ar if nav_services and nav_services.title_ar else 'الخدمات' }}
+                    {% else %}
+                        {{ nav_services.title_en if nav_services and nav_services.title_en else 'Services' }}
+                    {% endif %}
+                </a>
+                <a href="{{ url_for('certified_translation') }}" class="nav-link-item">
+                    {% if current_lang == 'ar' %}
+                        الترجمة المعتمدة
+                    {% else %}
+                        Translation
+                    {% endif %}
+                </a>
+                <a href="{{ url_for('about') }}" class="nav-link-item">
+                    {% if current_lang == 'ar' %}
+                        {{ nav_about.title_ar if nav_about and nav_about.title_ar else 'من نحن' }}
+                    {% else %}
+                        {{ nav_about.title_en if nav_about and nav_about.title_en else 'About Us' }}
+                    {% endif %}
+                </a>
+                <a href="{{ url_for('index') }}#about" class="nav-link-item">
+                    {% if current_lang == 'ar' %}
+                        {{ nav_stories.title_ar if nav_stories and nav_stories.title_ar else 'القصص' }}
+                    {% else %}
+                        {{ nav_stories.title_en if nav_stories and nav_stories.title_en else 'Stories' }}
+                    {% endif %}
+                </a>
+                <a href="{{ url_for('index') }}#contact" class="nav-link-item">
+                    {% if current_lang == 'ar' %}
+                        {{ nav_contact.title_ar if nav_contact and nav_contact.title_ar else 'تواصل معنا' }}
+                    {% else %}
+                        {{ nav_contact.title_en if nav_contact and nav_contact.title_en else 'Contact' }}
+                    {% endif %}
+                </a>
+                
+                <!-- Language Switcher -->
+                <div class="language-switcher" style="position: relative; display: inline-block;">
+                    <button class="lang-btn" style="background: #f8f9fa; border: 2px solid #e9ecef; border-radius: 20px; padding: 0.4rem 0.8rem; cursor: pointer; font-weight: 500; transition: all 0.3s ease; font-size: 0.85rem;">
+                        {% if current_lang == 'ar' %}العربية{% else %}English{% endif %} 🌐
+                    </button>
+                    <div class="lang-dropdown" style="position: absolute; top: 100%; right: 0; background: white; border: 1px solid #e9ecef; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); min-width: 120px; z-index: 1000; display: none;">
+                        {% for lang_code, lang_name in languages.items() %}
+                        <a href="{{ url_for('set_language_route', lang=lang_code) }}" 
+                           class="lang-option{% if current_lang == lang_code %} active{% endif %}"
+                           style="display: block; padding: 0.75rem 1rem; text-decoration: none; color: #2c3e50; transition: all 0.3s ease;"
+                           onmouseover="this.style.background='#f8f9fa'" 
+                           onmouseout="this.style.background='{% if current_lang == lang_code %}#f8f9fa{% else %}white{% endif %}'">
+                            {{ lang_name }}
+                        </a>
+                        {% endfor %}
+                    </div>
+                </div>
+                
+                <div class="theme-toggle" id="themeToggle">
+                    <div class="theme-toggle-slider">🌙</div>
+                </div>
+            </div>
+            <button class="mobile-menu-toggle" id="mobileMenuToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+        <div class="mobile-nav" id="mobileNav">
+            <a href="{{ url_for('index') }}" class="nav-link-item">
+                {% if current_lang == 'ar' %}
+                    {{ nav_home.title_ar if nav_home and nav_home.title_ar else 'الرئيسية' }}
+                {% else %}
+                    {{ nav_home.title_en if nav_home and nav_home.title_en else 'Home' }}
+                {% endif %}
+            </a>
+            <a href="{{ url_for('services') }}" class="nav-link-item">
+                {% if current_lang == 'ar' %}
+                    {{ nav_services.title_ar if nav_services and nav_services.title_ar else 'الخدمات' }}
+                {% else %}
+                    {{ nav_services.title_en if nav_services and nav_services.title_en else 'Services' }}
+                {% endif %}
+            </a>
+            <a href="{{ url_for('certified_translation') }}" class="nav-link-item">
+                {% if current_lang == 'ar' %}
+                    الترجمة المعتمدة
+                {% else %}
+                    Translation
+                {% endif %}
+            </a>
+            <a href="{{ url_for('about') }}" class="nav-link-item">
+                {% if current_lang == 'ar' %}
+                    {{ nav_about.title_ar if nav_about and nav_about.title_ar else 'من نحن' }}
+                {% else %}
+                    {{ nav_about.title_en if nav_about and nav_about.title_en else 'About Us' }}
+                {% endif %}
+            </a>
+            <a href="{{ url_for('index') }}#about" class="nav-link-item">
+                {% if current_lang == 'ar' %}
+                    {{ nav_stories.title_ar if nav_stories and nav_stories.title_ar else 'القصص' }}
+                {% else %}
+                    {{ nav_stories.title_en if nav_stories and nav_stories.title_en else 'Stories' }}
+                {% endif %}
+            </a>
+            <a href="{{ url_for('index') }}#contact" class="nav-link-item">
+                {% if current_lang == 'ar' %}
+                    {{ nav_contact.title_ar if nav_contact and nav_contact.title_ar else 'تواصل معنا' }}
+                {% else %}
+                    {{ nav_contact.title_en if nav_contact and nav_contact.title_en else 'Contact' }}
+                {% endif %}
+            </a>
+            <div class="theme-toggle" id="themeToggleMobile" style="margin: 1rem auto; width: 60px;">
+                <div class="theme-toggle-slider">🌙</div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-backgrounds">
+            <div class="hero-bg"></div>
+            <div class="hero-bg"></div>
+            <div class="hero-bg"></div>
+        </div>
+        <div class="hero-content" style="opacity: 1 !important; visibility: visible !important;">
+            <h1 style="opacity: 1 !important; visibility: visible !important; color: #1a1a1a !important; display: block !important; text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.8) !important;">{% if current_lang == 'ar' %}خدمات الترجمة المعتمدة{% else %}Certified Translation Services{% endif %}</h1>
+            <p class="hero-subtitle" style="opacity: 1 !important; visibility: visible !important; color: #1a1a1a !important; display: block !important; text-shadow: 1px 1px 3px rgba(255, 255, 255, 0.8) !important;">
+                {% if current_lang == 'ar' %}
+                    ترجمة معتمدة ودقيقة للوثائق الرسمية مع ضمان القبول من قبل جميع السلطات والمؤسسات
+                {% else %}
+                    Accurate and certified translation of official documents with guaranteed acceptance by all authorities and institutions
+                {% endif %}
+            </p>
+        </div>
+    </section>
+
+    <!-- Document Search Section -->
+    <section class="features" style="padding: 4rem 2rem; background: rgba(255, 255, 255, 0.5);">
+        <div class="container">
+            <div class="features-header" style="text-align: center; margin-bottom: 3rem;">
+                <h2 style="color: #2c3e50 !important; font-size: 2.5rem; margin-bottom: 1rem;">
+                    {% if current_lang == 'ar' %}
+                        🔍 البحث عن وثيقتك المترجمة
+                    {% else %}
+                        🔍 Search for Your Translated Document
+                    {% endif %}
+                </h2>
+                <p style="color: #6c757d !important; font-size: 1.1rem;">
+                    {% if current_lang == 'ar' %}
+                        أدخل كود الوثيقة المترجمة للبحث عن وثيقتك وتحميلها
+                    {% else %}
+                        Enter your translated document code to search and download your document
+                    {% endif %}
+                </p>
+            </div>
+
+            <div style="max-width: 600px; margin: 0 auto; background: white; padding: 2.5rem; border-radius: 20px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);">
+                <form method="POST" action="{{ url_for('search_translated_document') }}" style="display: flex; flex-direction: column; gap: 1.5rem;">
+                    <div>
+                        <label for="document_code" style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #2c3e50;">
+                            {% if current_lang == 'ar' %}
+                                كود الوثيقة:
+                            {% else %}
+                                Document Code:
+                            {% endif %}
+                        </label>
+                        <input 
+                            type="text" 
+                            id="document_code" 
+                            name="document_code" 
+                            required
+                            placeholder="{% if current_lang == 'ar' %}أدخل كود الوثيقة{% else %}Enter document code{% endif %}"
+                            style="width: 100%; padding: 1rem; border: 2px solid #e9ecef; border-radius: 10px; font-size: 1.1rem; text-transform: uppercase;"
+                            value="{{ document_code if document_code else '' }}"
+                        >
+                    </div>
+                    <button 
+                        type="submit" 
+                        style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 1rem 2rem; border: none; border-radius: 10px; font-size: 1.1rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease;"
+                        onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 25px rgba(102, 126, 234, 0.3)'"
+                        onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'"
+                    >
+                        {% if current_lang == 'ar' %}
+                            🔍 بحث
+                        {% else %}
+                            🔍 Search
+                        {% endif %}
+                    </button>
+                </form>
+
+                {% if document %}
+                <div class="document-found-box" style="margin-top: 2rem; padding: 1.5rem; background: #f8f9fa; border-radius: 10px;">
+                    <h3 style="color: #28a745; margin-bottom: 1rem;">
+                        {% if current_lang == 'ar' %}
+                            ✅ تم العثور على الوثيقة
+                        {% else %}
+                            ✅ Document Found
+                        {% endif %}
+                    </h3>
+                    <div style="margin-bottom: 1rem;">
+                        <p style="color: #2c3e50; margin-bottom: 0.5rem;">
+                            <strong>{% if current_lang == 'ar' %}كود الوثيقة:{% else %}Document Code:{% endif %}</strong> {{ document.document_code }}
+                        </p>
+                        <p style="color: #2c3e50; margin-bottom: 0.5rem;">
+                            <strong>{% if current_lang == 'ar' %}اسم الملف:{% else %}File Name:{% endif %}</strong> {{ document.original_filename }}
+                        </p>
+                        <p style="color: #6c757d; font-size: 0.9rem;">
+                            <strong>{% if current_lang == 'ar' %}تاريخ الرفع:{% else %}Uploaded:{% endif %}</strong> {{ document.uploaded_at }}
+                        </p>
+                    </div>
+                    <a 
+                        href="{{ url_for('download_translated_document', filename=document.file_path) }}" 
+                        style="display: inline-block; background: #28a745; color: white; padding: 0.75rem 1.5rem; border-radius: 8px; text-decoration: none; font-weight: 600; transition: all 0.3s ease;"
+                        onmouseover="this.style.background='#218838'; this.style.transform='translateY(-2px)'"
+                        onmouseout="this.style.background='#28a745'; this.style.transform='translateY(0)'"
+                    >
+                        {% if current_lang == 'ar' %}
+                            ⬇️ تحميل الوثيقة
+                        {% else %}
+                            ⬇️ Download Document
+                        {% endif %}
+                    </a>
+                </div>
+                {% endif %}
+
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert-message {% if category == 'error' %}alert-error{% else %}alert-success{% endif %}" 
+                                 style="margin-top: 1.5rem; padding: 1rem; border-radius: 8px;"
+                                 {% if current_lang == 'ar' %}data-border-side="right"{% else %}data-border-side="left"{% endif %}
+                                 {% if category == 'error' %}data-border-color="#dc3545"{% else %}data-border-color="#28a745"{% endif %}>
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content Section -->
+    <section class="features">
+        <div class="features-container">
+            <div class="features-header" style="opacity: 1 !important; visibility: visible !important;">
+                <h2 style="opacity: 1 !important; visibility: visible !important; display: block !important;">
+                    {% if current_lang == 'ar' %}
+                        خدمات الترجمة المعتمدة
+                    {% else %}
+                        Certified Translation Services
+                    {% endif %}
+                </h2>
+                <p class="features-subtitle" style="opacity: 1 !important; visibility: visible !important; display: block !important;">
+                    {% if current_lang == 'ar' %}
+                        نقدم خدمات ترجمة معتمدة للوثائق الرسمية، مما يضمن قبولها من قبل السلطات الحكومية والمؤسسات التعليمية والمنظمات الدولية بدقة ومهنية.
+                    {% else %}
+                        We provide certified translation services for official documents, ensuring they are accepted by government authorities, educational institutions, and international organizations with accuracy and professionalism.
+                    {% endif %}
+                </p>
+            </div>
+
+            <!-- Service Details -->
+            <div class="services-simple-layout">
+                <!-- What We Translate -->
+                <div class="service-box service-box-with-bg scroll-animate" data-direction="left" style="opacity: 1 !important; visibility: visible !important; display: block !important;">
+                    <div class="service-box-content" style="opacity: 1 !important; visibility: visible !important; display: block !important; color: #ffffff !important; position: relative; z-index: 10;">
+                        <h3 style="opacity: 1 !important; visibility: visible !important; display: block !important; color: #ffffff !important; -webkit-text-fill-color: #ffffff !important; background: none !important; font-weight: bold !important; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8) !important;">
+                            {% if current_lang == 'ar' %}
+                                📄 أنواع الوثائق التي نترجمها
+                            {% else %}
+                                📄 Types of Documents We Translate
+                            {% endif %}
+                        </h3>
+                        <p style="opacity: 1 !important; visibility: visible !important; display: block !important; color: #ffffff !important; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8) !important;">
+                            {% if current_lang == 'ar' %}
+                                نقدم خدمات الترجمة المعتمدة لجميع أنواع الوثائق الرسمية المطلوبة للهجرة والدراسة والعمل:
+                            {% else %}
+                                We provide certified translation services for all types of official documents required for immigration, study, and work:
+                            {% endif %}
+                        </p>
+                        <ul class="feature-checklist" style="margin-top: 1.5rem; opacity: 1 !important; visibility: visible !important; color: #ffffff !important;">
+                            <li style="opacity: 1 !important; visibility: visible !important; color: #ffffff !important; display: list-item !important; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8) !important;">
+                                {% if current_lang == 'ar' %}
+                                    <strong style="color: #ffffff !important; opacity: 1 !important; visibility: visible !important; font-weight: bold !important; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8) !important;">الشهادات التعليمية:</strong> شهادات التخرج، الدبلومات، الدرجات العلمية، كشوف الدرجات
+                                {% else %}
+                                    <strong style="color: #ffffff !important; opacity: 1 !important; visibility: visible !important; font-weight: bold !important; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8) !important;">Educational Certificates:</strong> Graduation certificates, diplomas, degrees, transcripts
+                                {% endif %}
+                            </li>
+                            <li style="opacity: 1 !important; visibility: visible !important; color: #ffffff !important; display: list-item !important; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8) !important;">
+                                {% if current_lang == 'ar' %}
+                                    <strong style="color: #ffffff !important; opacity: 1 !important; visibility: visible !important; font-weight: bold !important; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8) !important;">الوثائق الشخصية:</strong> شهادات الميلاد، شهادات الزواج، شهادات الطلاق، شهادات الوفاة
+                                {% else %}
+                                    <strong style="color: #ffffff !important; opacity: 1 !important; visibility: visible !important; font-weight: bold !important; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8) !important;">Personal Documents:</strong> Birth certificates, marriage certificates, divorce certificates, death certificates
+                                {% endif %}
+                            </li>
+                            <li style="opacity: 1 !important; visibility: visible !important; color: #ffffff !important; display: list-item !important; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8) !important;">
+                                {% if current_lang == 'ar' %}
+                                    <strong style="color: #ffffff !important; opacity: 1 !important; visibility: visible !important; font-weight: bold !important; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8) !important;">الوثائق القانونية:</strong> السجلات الجنائية، الأحكام القضائية، العقود القانونية
+                                {% else %}
+                                    <strong style="color: #ffffff !important; opacity: 1 !important; visibility: visible !important; font-weight: bold !important; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8) !important;">Legal Documents:</strong> Criminal records, court judgments, legal contracts
+                                {% endif %}
+                            </li>
+                            <li style="opacity: 1 !important; visibility: visible !important; color: #ffffff !important; display: list-item !important; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8) !important;">
+                                {% if current_lang == 'ar' %}
+                                    <strong style="color: #ffffff !important; opacity: 1 !important; visibility: visible !important; font-weight: bold !important; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8) !important;">الوثائق المالية:</strong> كشوف الحسابات البنكية، إثباتات الدخل، كشوف الضرائب
+                                {% else %}
+                                    <strong style="color: #ffffff !important; opacity: 1 !important; visibility: visible !important; font-weight: bold !important; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8) !important;">Financial Documents:</strong> Bank statements, income proofs, tax records
+                                {% endif %}
+                            </li>
+                            <li style="opacity: 1 !important; visibility: visible !important; color: #ffffff !important; display: list-item !important; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8) !important;">
+                                {% if current_lang == 'ar' %}
+                                    <strong style="color: #ffffff !important; opacity: 1 !important; visibility: visible !important; font-weight: bold !important; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8) !important;">الوثائق الطبية:</strong> التقارير الطبية، شهادات الفحص الطبي، السجلات الصحية
+                                {% else %}
+                                    <strong style="color: #ffffff !important; opacity: 1 !important; visibility: visible !important; font-weight: bold !important; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8) !important;">Medical Documents:</strong> Medical reports, health examination certificates, health records
+                                {% endif %}
+                            </li>
+                            <li style="opacity: 1 !important; visibility: visible !important; color: #ffffff !important; display: list-item !important; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8) !important;">
+                                {% if current_lang == 'ar' %}
+                                    <strong style="color: #ffffff !important; opacity: 1 !important; visibility: visible !important; font-weight: bold !important; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8) !important;">وثائق العمل:</strong> خطابات التوظيف، شهادات الخبرة، عقود العمل
+                                {% else %}
+                                    <strong style="color: #ffffff !important; opacity: 1 !important; visibility: visible !important; font-weight: bold !important; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8) !important;">Employment Documents:</strong> Employment letters, experience certificates, work contracts
+                                {% endif %}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Why Choose Us -->
+                <div class="service-box service-box-with-bg service-box-bg-2 scroll-animate" data-direction="right" style="opacity: 1 !important; visibility: visible !important; display: block !important;">
+                    <div class="service-box-content" style="opacity: 1 !important; visibility: visible !important; display: block !important; color: #ffffff !important; position: relative; z-index: 10;">
+                        <h3 style="opacity: 1 !important; visibility: visible !important; display: block !important; color: #ffffff !important; -webkit-text-fill-color: #ffffff !important; background: none !important; font-weight: bold !important; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8) !important;">
+                            {% if current_lang == 'ar' %}
+                                ✨ لماذا تختار خدماتنا؟
+                            {% else %}
+                                ✨ Why Choose Our Services?
+                            {% endif %}
+                        </h3>
+                        <ul class="feature-checklist" style="margin-top: 1.5rem; opacity: 1 !important; visibility: visible !important; color: #ffffff !important;">
+                            <li style="opacity: 1 !important; visibility: visible !important; color: #ffffff !important; display: list-item !important; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8) !important;">
+                                {% if current_lang == 'ar' %}
+                                    <strong style="color: #ffffff !important; opacity: 1 !important; visibility: visible !important; font-weight: bold !important; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8) !important;">ترجمة معتمدة:</strong> جميع الترجمات معتمدة ومختومة بختم رسمي، مما يضمن قبولها من قبل جميع السلطات الكندية والدولية
+                                {% else %}
+                                    <strong style="color: #ffffff !important; opacity: 1 !important; visibility: visible !important; font-weight: bold !important; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8) !important;">Certified Translation:</strong> All translations are certified and stamped with an official seal, ensuring acceptance by all Canadian and international authorities
+                                {% endif %}
+                            </li>
+                            <li style="opacity: 1 !important; visibility: visible !important; color: #ffffff !important; display: list-item !important; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8) !important;">
+                                {% if current_lang == 'ar' %}
+                                    <strong style="color: #ffffff !important; opacity: 1 !important; visibility: visible !important; font-weight: bold !important; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8) !important;">دقة عالية:</strong> فريق من المترجمين المحترفين ذوي الخبرة في الترجمة القانونية والرسمية
+                                {% else %}
+                                    <strong style="color: #ffffff !important; opacity: 1 !important; visibility: visible !important; font-weight: bold !important; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8) !important;">High Accuracy:</strong> A team of professional translators experienced in legal and official translation
+                                {% endif %}
+                            </li>
+                            <li style="opacity: 1 !important; visibility: visible !important; color: #ffffff !important; display: list-item !important; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8) !important;">
+                                {% if current_lang == 'ar' %}
+                                    <strong style="color: #ffffff !important; opacity: 1 !important; visibility: visible !important; font-weight: bold !important; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8) !important;">اعتراف رسمي:</strong> ترجماتنا معترف بها من قبل IRCC (الهجرة واللاجئين والمواطنة الكندية) وجميع المؤسسات التعليمية
+                                {% else %}
+                                    <strong style="color: #ffffff !important; opacity: 1 !important; visibility: visible !important; font-weight: bold !important; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8) !important;">Official Recognition:</strong> Our translations are recognized by IRCC (Immigration, Refugees and Citizenship Canada) and all educational institutions
+                                {% endif %}
+                            </li>
+                            <li style="opacity: 1 !important; visibility: visible !important; color: #ffffff !important; display: list-item !important; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8) !important;">
+                                {% if current_lang == 'ar' %}
+                                    <strong style="color: #ffffff !important; opacity: 1 !important; visibility: visible !important; font-weight: bold !important; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8) !important;">تسليم سريع:</strong> نقدم خدمة ترجمة سريعة دون التضحية بالجودة، مع خيارات تسليم عاجلة متاحة
+                                {% else %}
+                                    <strong style="color: #ffffff !important; opacity: 1 !important; visibility: visible !important; font-weight: bold !important; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8) !important;">Fast Delivery:</strong> We provide fast translation service without compromising quality, with express delivery options available
+                                {% endif %}
+                            </li>
+                            <li style="opacity: 1 !important; visibility: visible !important; color: #ffffff !important; display: list-item !important; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8) !important;">
+                                {% if current_lang == 'ar' %}
+                                    <strong style="color: #ffffff !important; opacity: 1 !important; visibility: visible !important; font-weight: bold !important; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8) !important;">أسعار تنافسية:</strong> نقدم أسعاراً شفافة ومنافسة لجميع أنواع الوثائق
+                                {% else %}
+                                    <strong style="color: #ffffff !important; opacity: 1 !important; visibility: visible !important; font-weight: bold !important; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8) !important;">Competitive Prices:</strong> We offer transparent and competitive prices for all types of documents
+                                {% endif %}
+                            </li>
+                            <li style="opacity: 1 !important; visibility: visible !important; color: #ffffff !important; display: list-item !important; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8) !important;">
+                                {% if current_lang == 'ar' %}
+                                    <strong style="color: #ffffff !important; opacity: 1 !important; visibility: visible !important; font-weight: bold !important; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8) !important;">سرية تامة:</strong> نحافظ على سرية جميع الوثائق والمعلومات الشخصية
+                                {% else %}
+                                    <strong style="color: #ffffff !important; opacity: 1 !important; visibility: visible !important; font-weight: bold !important; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8) !important;">Complete Confidentiality:</strong> We maintain complete confidentiality of all documents and personal information
+                                {% endif %}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Process -->
+                <div class="service-box service-box-with-bg service-box-bg-3 scroll-animate" data-direction="left" style="opacity: 1 !important; visibility: visible !important; display: block !important;">
+                    <div class="service-box-content" style="opacity: 1 !important; visibility: visible !important; display: block !important; color: #ffffff !important; position: relative; z-index: 10;">
+                        <h3 style="opacity: 1 !important; visibility: visible !important; display: block !important; color: #ffffff !important; -webkit-text-fill-color: #ffffff !important; background: none !important; font-weight: bold !important; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8) !important;">
+                            {% if current_lang == 'ar' %}
+                                🔄 عملية الترجمة
+                            {% else %}
+                                🔄 Translation Process
+                            {% endif %}
+                        </h3>
+                        <ol class="process-list" style="margin-top: 1.5rem; line-height: 2; opacity: 1 !important; visibility: visible !important; color: #ffffff !important;">
+                            <li style="margin-bottom: 1rem; opacity: 1 !important; visibility: visible !important; color: #ffffff !important; display: list-item !important; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8) !important;">
+                                {% if current_lang == 'ar' %}
+                                    <strong style="color: #ffffff !important; opacity: 1 !important; visibility: visible !important; font-weight: bold !important; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8) !important;">تقديم الوثيقة:</strong> أرسل لنا نسخة واضحة من الوثيقة التي تريد ترجمتها
+                                {% else %}
+                                    <strong style="color: #ffffff !important; opacity: 1 !important; visibility: visible !important; font-weight: bold !important; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8) !important;">Submit Document:</strong> Send us a clear copy of the document you want to translate
+                                {% endif %}
+                            </li>
+                            <li style="margin-bottom: 1rem; opacity: 1 !important; visibility: visible !important; color: #ffffff !important; display: list-item !important; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8) !important;">
+                                {% if current_lang == 'ar' %}
+                                    <strong style="color: #ffffff !important; opacity: 1 !important; visibility: visible !important; font-weight: bold !important; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8) !important;">المراجعة والتسعير:</strong> نراجع الوثيقة ونقدم لك عرض سعر واضح
+                                {% else %}
+                                    <strong style="color: #ffffff !important; opacity: 1 !important; visibility: visible !important; font-weight: bold !important; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8) !important;">Review & Pricing:</strong> We review the document and provide you with a clear quote
+                                {% endif %}
+                            </li>
+                            <li style="margin-bottom: 1rem; opacity: 1 !important; visibility: visible !important; color: #ffffff !important; display: list-item !important; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8) !important;">
+                                {% if current_lang == 'ar' %}
+                                    <strong style="color: #ffffff !important; opacity: 1 !important; visibility: visible !important; font-weight: bold !important; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8) !important;">الترجمة:</strong> يقوم مترجم محترف معتمد بترجمة الوثيقة بدقة عالية
+                                {% else %}
+                                    <strong style="color: #ffffff !important; opacity: 1 !important; visibility: visible !important; font-weight: bold !important; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8) !important;">Translation:</strong> A certified professional translator translates the document with high accuracy
+                                {% endif %}
+                            </li>
+                            <li style="margin-bottom: 1rem; opacity: 1 !important; visibility: visible !important; color: #ffffff !important; display: list-item !important; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8) !important;">
+                                {% if current_lang == 'ar' %}
+                                    <strong style="color: #ffffff !important; opacity: 1 !important; visibility: visible !important; font-weight: bold !important; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8) !important;">المراجعة والتدقيق:</strong> يتم مراجعة الترجمة وتدقيقها للتأكد من الدقة
+                                {% else %}
+                                    <strong style="color: #ffffff !important; opacity: 1 !important; visibility: visible !important; font-weight: bold !important; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8) !important;">Review & Proofreading:</strong> The translation is reviewed and proofread to ensure accuracy
+                                {% endif %}
+                            </li>
+                            <li style="margin-bottom: 1rem; opacity: 1 !important; visibility: visible !important; color: #ffffff !important; display: list-item !important; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8) !important;">
+                                {% if current_lang == 'ar' %}
+                                    <strong style="color: #ffffff !important; opacity: 1 !important; visibility: visible !important; font-weight: bold !important; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8) !important;">التصديق والتسليم:</strong> يتم ختم الترجمة بختم معتمد وتسليمها لك
+                                {% else %}
+                                    <strong style="color: #ffffff !important; opacity: 1 !important; visibility: visible !important; font-weight: bold !important; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8) !important;">Certification & Delivery:</strong> The translation is stamped with a certified seal and delivered to you
+                                {% endif %}
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+
+                <!-- Pricing Info -->
+                <div class="service-box service-box-with-bg service-box-bg-4 scroll-animate" data-direction="right" style="opacity: 1 !important; visibility: visible !important; display: block !important;">
+                    <div class="service-box-content" style="opacity: 1 !important; visibility: visible !important; display: block !important; color: #ffffff !important; position: relative; z-index: 10;">
+                        <h3 style="opacity: 1 !important; visibility: visible !important; display: block !important; color: #ffffff !important; -webkit-text-fill-color: #ffffff !important; background: none !important; font-weight: bold !important; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8) !important;">
+                            {% if current_lang == 'ar' %}
+                                💰 معلومات التسعير
+                            {% else %}
+                                💰 Pricing Information
+                            {% endif %}
+                        </h3>
+                        <p style="opacity: 1 !important; visibility: visible !important; display: block !important; color: #ffffff !important; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8) !important;">
+                            {% if current_lang == 'ar' %}
+                                نقدم أسعاراً شفافة ومنافسة لجميع أنواع الوثائق. يعتمد السعر على:
+                            {% else %}
+                                We offer transparent and competitive prices for all types of documents. Pricing depends on:
+                            {% endif %}
+                        </p>
+                        <ul class="feature-checklist" style="margin-top: 1.5rem; opacity: 1 !important; visibility: visible !important; color: #ffffff !important;">
+                            <li style="opacity: 1 !important; visibility: visible !important; color: #ffffff !important; display: list-item !important; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8) !important;">
+                                {% if current_lang == 'ar' %}
+                                    نوع الوثيقة وعدد الصفحات
+                                {% else %}
+                                    Document type and number of pages
+                                {% endif %}
+                            </li>
+                            <li style="opacity: 1 !important; visibility: visible !important; color: #ffffff !important; display: list-item !important; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8) !important;">
+                                {% if current_lang == 'ar' %}
+                                    لغة الوثيقة الأصلية واللغة المطلوبة
+                                {% else %}
+                                    Source language and target language
+                                {% endif %}
+                            </li>
+                            <li style="opacity: 1 !important; visibility: visible !important; color: #ffffff !important; display: list-item !important; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8) !important;">
+                                {% if current_lang == 'ar' %}
+                                    مستوى التعقيد والمصطلحات المتخصصة
+                                {% else %}
+                                    Level of complexity and specialized terminology
+                                {% endif %}
+                            </li>
+                            <li style="opacity: 1 !important; visibility: visible !important; color: #ffffff !important; display: list-item !important; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8) !important;">
+                                {% if current_lang == 'ar' %}
+                                    سرعة التسليم المطلوبة (عادي أو عاجل)
+                                {% else %}
+                                    Required delivery speed (standard or express)
+                                {% endif %}
+                            </li>
+                        </ul>
+                        <p style="margin-top: 1.5rem; font-weight: 600; opacity: 1 !important; visibility: visible !important; display: block !important; color: #ffffff !important; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8) !important;">
+                            {% if current_lang == 'ar' %}
+                                للاستفسار عن الأسعار أو طلب عرض سعر، يرجى التواصل معنا عبر النموذج أدناه أو الاتصال بنا مباشرة.
+                            {% else %}
+                                For pricing inquiries or to request a quote, please contact us through the form below or call us directly.
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="pricing" style="padding: 3rem 2rem;">
+        <div class="pricing-header">
+            <h2>
+                {% if current_lang == 'ar' %}
+                    جاهز لترجمة وثائقك؟
+                {% else %}
+                    Ready to Translate Your Documents?
+                {% endif %}
+            </h2>
+            <p class="hero-subtitle">
+                {% if current_lang == 'ar' %}
+                    تواصل معنا اليوم للحصول على عرض سعر مجاني واستشارة حول احتياجات الترجمة الخاصة بك
+                {% else %}
+                    Contact us today for a free quote and consultation about your translation needs
+                {% endif %}
+            </p>
+            <a href="{{ url_for('index') }}#contact" class="cta-button" style="display: inline-block; margin-top: 2rem;">
+                {% if current_lang == 'ar' %}
+                    اطلب عرض سعر مجاني
+                {% else %}
+                    Request Free Quote
+                {% endif %}
+            </a>
+        </div>
+    </section>
+
+<style>
+/* Alert message border styling based on RTL/LTR */
+[dir="ltr"] .alert-message[data-border-side="left"] {
+    border-left: 4px solid;
+}
+[dir="rtl"] .alert-message[data-border-side="right"] {
+    border-right: 4px solid;
+}
+.alert-message[data-border-color="#dc3545"] {
+    border-color: #dc3545;
+}
+.alert-message[data-border-color="#28a745"] {
+    border-color: #28a745;
+}
+
+/* Alert message background colors */
+.alert-message.alert-error {
+    background: #f8d7da;
+    color: #721c24;
+}
+.alert-message.alert-success {
+    background: #d4edda;
+    color: #155724;
+}
+
+/* RTL/LTR text alignment */
+[dir="rtl"] .feature-checklist,
+[dir="rtl"] .feature-checklist ul,
+[dir="rtl"] .feature-checklist ol {
+    text-align: right;
+}
+[dir="ltr"] .feature-checklist,
+[dir="ltr"] .feature-checklist ul,
+[dir="ltr"] .feature-checklist ol {
+    text-align: left;
+}
+
+[dir="rtl"] .process-list {
+    padding-right: 1.5rem;
+}
+[dir="ltr"] .process-list {
+    padding-left: 1.5rem;
+}
+
+[dir="rtl"] .document-found-box {
+    border-right: 4px solid #28a745;
+}
+[dir="ltr"] .document-found-box {
+    border-left: 4px solid #28a745;
+}
+
+/* Force all text to be visible */
+* {
+    visibility: visible !important;
+}
+
+/* Ensure service-box-content is visible */
+.service-box-content {
+    opacity: 1 !important;
+    transform: translateX(0) !important;
+    visibility: visible !important;
+    display: block !important;
+}
+
+.service-box-content h3,
+.service-box-content p,
+.service-box-content ul,
+.service-box-content li,
+.service-box-content ol,
+.service-box-content strong {
+    opacity: 1 !important;
+    transform: translateX(0) !important;
+    visibility: visible !important;
+    display: block !important;
+}
+
+/* Ensure text is visible in service boxes */
+.service-box-with-bg .service-box-content {
+    color: #ffffff !important;
+    position: relative;
+    z-index: 10;
+}
+
+.service-box-with-bg .service-box-content h3 {
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+    background: none !important;
+    -webkit-background-clip: unset !important;
+    background-clip: unset !important;
+    visibility: visible !important;
+    display: block !important;
+    font-weight: bold !important;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8) !important;
+}
+
+.service-box-with-bg .service-box-content p {
+    color: #ffffff !important;
+    visibility: visible !important;
+    display: block !important;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8) !important;
+}
+
+.service-box-with-bg .service-box-content ul,
+.service-box-with-bg .service-box-content li {
+    color: #ffffff !important;
+    visibility: visible !important;
+    display: list-item !important;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8) !important;
+}
+
+.service-box-with-bg .service-box-content strong {
+    color: #ffffff !important;
+    visibility: visible !important;
+    display: inline !important;
+    font-weight: bold !important;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8) !important;
+}
+
+/* Ensure hero section is visible */
+.hero-content h1,
+.hero-content p {
+    opacity: 1 !important;
+    visibility: visible !important;
+    color: #1a1a1a !important;
+    text-shadow: 1px 1px 3px rgba(255, 255, 255, 0.8) !important;
+}
+
+/* Ensure features section is visible */
+.features-header h2,
+.features-header p {
+    opacity: 1 !important;
+    visibility: visible !important;
+    color: #1a1a1a !important;
+}
+
+/* Ensure service boxes are visible */
+.service-box {
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: block !important;
+}
+
+.service-box-with-bg {
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: block !important;
+}
+
+.service-box-content h3,
+.service-box-content p,
+.service-box-content ul,
+.service-box-content li,
+.service-box-content ol,
+.service-box-content strong {
+    color: #ffffff !important;
+}
+
+.service-box-with-bg .service-box-content h3 {
+    -webkit-text-fill-color: #ffffff !important;
+    color: #ffffff !important;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8) !important;
+}
+
+.service-box-with-bg .service-box-content p,
+.service-box-with-bg .service-box-content ul,
+.service-box-with-bg .service-box-content li,
+.service-box-with-bg .service-box-content strong {
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8) !important;
+}
+
+/* Professional Navbar Styling - Consistent across all pages */
+.nav-links {
+    gap: 0.5rem !important;
+    flex-wrap: wrap;
+}
+
+.nav-link-item {
+    font-size: 0.85rem !important;
+    padding: 0.4rem 0.75rem !important;
+    font-weight: 500 !important;
+    letter-spacing: 0.3px;
+    border-radius: 8px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    white-space: nowrap;
+}
+
+.nav-link-item:hover {
+    background: rgba(220, 38, 38, 0.08) !important;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(220, 38, 38, 0.15);
+}
+
+.nav-link-item::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%) scaleX(0);
+    width: 60%;
+    height: 2px;
+    background: linear-gradient(90deg, #dc2626, #991b1b);
+    border-radius: 2px;
+    transition: transform 0.3s ease;
+}
+
+.nav-link-item:hover::after {
+    transform: translateX(-50%) scaleX(1);
+}
+
+.nav-dashboard-btn {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+    color: white !important;
+    padding: 0.4rem 0.9rem !important;
+    border-radius: 20px !important;
+    font-size: 0.85rem !important;
+    font-weight: 600 !important;
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+}
+
+.nav-dashboard-btn:hover {
+    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.nav-dashboard-btn::after {
+    display: none;
+}
+
+.logo span {
+    font-size: 1.2rem !important;
+    letter-spacing: 1.5px;
+}
+
+.logo-img {
+    height: 35px !important;
+    width: auto;
+}
+
+.nav-container {
+    padding: 0.75rem 1.5rem !important;
+}
+
+/* Mobile Navbar */
+.mobile-nav a {
+    font-size: 0.9rem !important;
+    padding: 0.6rem 1rem !important;
+}
+</style>
+
+<script src="{{ url_for('static', filename='tooplate-cloud-scripts.js') }}"></script>
+<script>
+// Theme Toggle Functionality
+const themeToggle = document.getElementById('themeToggle');
+const themeToggleMobile = document.getElementById('themeToggleMobile');
+const html = document.documentElement;
+
+// Check for saved theme preference or default to 'dark'
+const currentTheme = localStorage.getItem('theme') || 'dark';
+html.setAttribute('data-theme', currentTheme);
+
+// Update toggle icon based on current theme
+function updateToggleIcon() {
+    const isDark = html.getAttribute('data-theme') === 'dark';
+    const icon = isDark ? '🌙' : '☀️';
+    
+    if (themeToggle) {
+        themeToggle.querySelector('.theme-toggle-slider').textContent = icon;
+    }
+    if (themeToggleMobile) {
+        themeToggleMobile.querySelector('.theme-toggle-slider').textContent = icon;
+    }
+}
+
+// Initialize icon
+updateToggleIcon();
+
+// Toggle theme function
+function toggleTheme() {
+    const currentTheme = html.getAttribute('data-theme');
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    
+    html.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
+    updateToggleIcon();
+}
+
+// Add click listeners
+if (themeToggle) {
+    themeToggle.addEventListener('click', toggleTheme);
+}
+if (themeToggleMobile) {
+    themeToggleMobile.addEventListener('click', toggleTheme);
+}
+
+// Scroll Animation Observer
+const scrollAnimateObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('animate-in');
+        }
+    });
+}, {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+});
+
+// Observe all elements with scroll-animate class
+document.addEventListener('DOMContentLoaded', function() {
+    // Make ALL content visible immediately - NO DELAY
+    // Force all text elements to be visible
+    const allTextElements = document.querySelectorAll('h1, h2, h3, h4, h5, h6, p, span, li, ul, ol, strong, a');
+    allTextElements.forEach(element => {
+        element.style.setProperty('opacity', '1', 'important');
+        element.style.setProperty('visibility', 'visible', 'important');
+        element.style.setProperty('transform', 'translate(0, 0)', 'important');
+        element.classList.add('animate-in');
+    });
+    
+    // Make service box content visible
+    const serviceBoxContents = document.querySelectorAll('.service-box-content');
+    serviceBoxContents.forEach(content => {
+        content.style.setProperty('opacity', '1', 'important');
+        content.style.setProperty('transform', 'translate(0, 0)', 'important');
+        content.style.setProperty('visibility', 'visible', 'important');
+        content.style.setProperty('display', 'block', 'important');
+        content.classList.add('animate-in');
+        
+        // Also make child elements visible
+        const children = content.querySelectorAll('h3, p, ul, li, ol, strong, h1, h2, span');
+        children.forEach(child => {
+            child.style.setProperty('opacity', '1', 'important');
+            child.style.setProperty('transform', 'translate(0, 0)', 'important');
+            child.style.setProperty('visibility', 'visible', 'important');
+            // Set color based on parent - white for service boxes, dark for others
+            if (child.closest('.service-box-with-bg') || child.closest('.service-box-content')) {
+                child.style.setProperty('color', '#ffffff', 'important');
+                child.style.setProperty('text-shadow', '1px 1px 3px rgba(0, 0, 0, 0.8)', 'important');
+            } else {
+                child.style.setProperty('color', '#1a1a1a', 'important');
+            }
+            child.classList.add('animate-in');
+        });
+    });
+    
+    // Make scroll-animate elements visible
+    const animateElements = document.querySelectorAll('.scroll-animate');
+    animateElements.forEach(element => {
+        element.style.setProperty('opacity', '1', 'important');
+        element.style.setProperty('visibility', 'visible', 'important');
+        element.classList.add('animate-in');
+    });
+    
+    // Force hero content visible
+    const heroContent = document.querySelector('.hero-content');
+    if (heroContent) {
+        heroContent.style.setProperty('opacity', '1', 'important');
+        heroContent.style.setProperty('visibility', 'visible', 'important');
+        const heroChildren = heroContent.querySelectorAll('h1, p');
+        heroChildren.forEach(child => {
+            child.style.setProperty('opacity', '1', 'important');
+            child.style.setProperty('visibility', 'visible', 'important');
+            // Set color based on parent - white for service boxes, dark for others
+            if (child.closest('.service-box-with-bg') || child.closest('.service-box-content')) {
+                child.style.setProperty('color', '#ffffff', 'important');
+                child.style.setProperty('text-shadow', '1px 1px 3px rgba(0, 0, 0, 0.8)', 'important');
+            } else {
+                child.style.setProperty('color', '#1a1a1a', 'important');
+            }
+            child.style.setProperty('transform', 'translateY(0)', 'important');
+        });
+    }
+    
+    // Force features header visible
+    const featuresHeader = document.querySelector('.features-header');
+    if (featuresHeader) {
+        featuresHeader.style.setProperty('opacity', '1', 'important');
+        featuresHeader.style.setProperty('visibility', 'visible', 'important');
+        const headerChildren = featuresHeader.querySelectorAll('h2, p');
+        headerChildren.forEach(child => {
+            child.style.setProperty('opacity', '1', 'important');
+            child.style.setProperty('visibility', 'visible', 'important');
+            child.style.setProperty('transform', 'translateY(0)', 'important');
+        });
+    }
+    
+    // Still observe for scroll animations (but they're already visible)
+    const scrollAnimateElements = document.querySelectorAll('.scroll-animate');
+    scrollAnimateElements.forEach(element => {
+        scrollAnimateObserver.observe(element);
+    });
+
+    // Text Animation Observer for service-box-content
+    const textAnimationObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('animate-in');
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateX(0)';
+            }
+        });
+    }, {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    });
+
+    // Observe service-box-content elements
+    serviceBoxContents.forEach(content => {
+        textAnimationObserver.observe(content);
+    });
+
+    // Language switcher functionality
+    const langBtn = document.querySelector('.lang-btn');
+    const langDropdown = document.querySelector('.lang-dropdown');
+    
+    if (langBtn && langDropdown) {
+        langBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            langDropdown.style.display = langDropdown.style.display === 'block' ? 'none' : 'block';
+        });
+        
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function() {
+            langDropdown.style.display = 'none';
+        });
+        
+        // Prevent dropdown from closing when clicking inside it
+        langDropdown.addEventListener('click', function(e) {
+            e.stopPropagation();
+        });
+    }
+});
+</script>
+</body>
+</html>
+
